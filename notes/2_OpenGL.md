@@ -43,4 +43,12 @@
   * e.g.: GLUT, SDL, SFML, GLFW
 
 ##### GLFW
-- ...
+- is a framework used to simplify the construction of contexts and window
+
+- it's not really necessary, but the process of creating window is OS dependent
+
+##### GLAD
+- used to manage function pointers, it's also no required but makes lifes much easier
+
+##### Viewport
+- where openGL will render
