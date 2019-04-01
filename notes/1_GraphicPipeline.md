@@ -1,7 +1,7 @@
 ## Computer Graphics
 ### Graphic Pipeline
 - lets build up the ground rules  
-- the final ideia is to build to an __image__ 
+- the final idea is to build to an __image__ 
 
 - the pipeline is a path to be followed by pixels
 - an algorithm with data will reveal an image
@@ -36,7 +36,7 @@ __NOTE__: it's not always necessary to describe the insides of an object
 
 __NOTE__: _Riemann touch_, when an algorithm gets better with more precision
 
-- the circle can be divied into N (8) parts, and have a somewhat good aproximation
+- the circle can be divided into N (8) parts, and have a somewhat good approximation
   * Riemann touch
 
 - __why triangles?__
@@ -51,12 +51,12 @@ __NOTE__: _Riemann touch_, when an algorithm gets better with more precision
 - those scanner uses the highest resolution possible
 
 - LOD: Level Of Details, how accurate the representation will be
-  * differents LODs can be used to distant objects
+  * different LODs can be used to distant objects
 - distant objects use coarse LODs
 
 - there is a Error x Size correlation with the resolution of the objects
 
-- a few techniquies to change the image resolution can be used
+- a few techniques to change the image resolution can be used
   * when creating/deleting a vertex the other can slowly converge to fill that or do it instantly
 
 ##### Vertex Removal
@@ -68,7 +68,7 @@ __NOTE__: _Riemann touch_, when an algorithm gets better with more precision
   * 2. remove it
   * 3. re-triangulate the hole, it can be done smoothly or abruptly
 
-- using the right order to insert the points makes it quickly to "understamd" what is on the image
+- using the right order to insert the points makes it quickly to "understand" what is on the image
 - __what is the right/best order to insert the vertex?__
 - not removing vertex on a curve, or on the borders ....
 
@@ -78,10 +78,10 @@ __NOTE__: _Riemann touch_, when an algorithm gets better with more precision
 - the description of each vertex is its coordinates
 - those coordinates indicates the distance on each axis from a reference point, the __Origin__
 
-#### Tranformations
-- are bassically modification on the object description
+#### Transformations
+- are basically modification on the object description
 - such as moving the object is just changing its distance from the origin
 
 #### Surface vs Light vs Color
 - from the surface description, we apply the light and the apply the color
-- many differents algorithms are used to do it
+- many different algorithms are used to do it

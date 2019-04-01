@@ -1,9 +1,10 @@
 ### Raster Pipeline Overview
-<OpenGL-4.5_core-profile> FIX
+![Open 4.5 Core Profile](notes/res/image-open4.5-core-profile.png)
+- OpenGL-4.5 Core Profile
 
 #### OpenGL
 - is a software interface that simplifies the programmer job to use graphics hardware
-	* without that we would use assembly
+  * without that we would use assembly
 
 - there are others: DirectX, Pixar's RenderMan
 
@@ -21,22 +22,43 @@ __OpenGL Extensions__
 #### OpenGL Mathematics **GLM**
 - easy to use with OpenGL
 
-- __INSERT SAMPLE CODE__
+```C++
+  void Test()
+  {
+    glm::vec4 Pos = glm::vec4(glm::vec3(0.0f), 1.0f);
+    glm::mat4 Model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f));
+    glm::vec4 Tranformed = Model * Pos;
+  }
+```
+```C++
+  void GlmToOpenGL()
+  {
+    glm::vec4 v(0.0f);
+    glm::mat4 m(1.0f);
+    ....
+    glVertex3fv(&v[0]); // OpenGL interface
+    glLoadMatrix(&m[0][0]);
+  }
+```
+
 
 #### Shading language
 - graphic programming language, runs in the GPU
   * data structures: color, normal, etc ..
   * operation: dot, cross product, etc ..
   * GLSL, HLSL, Cg <- _usually highly parallel_
+  * usually C++ like
 
 - programmer -> OpenGL interface -> OpenGL implementation -> frame buffer
                 * CPU memory        * GPU memory
 
 ##### GLSL
+- is a C++ like language
+
 - input: geometric primitives
   * GL_POINTS, GL_TRIANGLE, GL_LINE_STRIP, SGL_LINES, ...
 
-- FIX current_pipeline_image
+![OpenGL-pipeline](notes/res/image-current-pipeline.png)
 - the GLSL code runs in the Vertex Program of the pipeline
   * one thread for each vertex
 
@@ -52,10 +74,15 @@ __OpenGL Extensions__
   * in, out, inout are one for each thread
   * uniform makes the variable shared between all threads
 
+###### Vertex Shader
+- responsible for the vertex processing
+  * one thread per vertex
+  * usually there are _less_ vertexes than pixels
+
 - sample code: Vertex Shader
   * simply gets the input
   * the output is a point
-```
+```C++
   in vec3 vPos;
   in vec4 vCol;
   out vec4 color;
@@ -65,14 +92,21 @@ __OpenGL Extensions__
     gl_Position = vertex;
   }
 ```
+- __NOTE:__ gl\_Position: is a built-in variable for output on the vertex shader
+
+###### Fragment Shader
+- responsible for pixel panting
+  * one thread per pixel
+  * usually there a _lot more_ pixel than vertexes
 
 - sample code: Fragment Shader
   * the output is a painted pixel
-```
+```C++
   in vec4 color;
   void main()
   {
-    gl_FragColor = ...;
+    gl_FragColor = color;
   }
 ```
+- __NOTE:__ gl\_FragColor: is a built-in variable for output on the fragment shader
 - __NOTE:__ in this step we make stuff like interpolation
