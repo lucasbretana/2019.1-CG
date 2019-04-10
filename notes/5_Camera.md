@@ -54,6 +54,9 @@ __note:__ uses transformation
 ## World-2-Camera Transform
 - aka: World-2-Eye transform
 
+- moving objects between basis
+  * Model -> World -> Camera -> ....
+
 - the idea is to create a matrix such that we make the camera
   + 1) the to the origin of the World Coordinate (__canonical basis__)
   + 2) rotate to align, becoming the canonical basis
@@ -85,8 +88,39 @@ __note:__ uses transformation
 #### Finding u,v,w
 - given the two parameters lookV and upV
 
+- the W axis is exactly the look vector, but looking into the other direction
+  + that's because we use the _right hand system_
+
+- the U axis is calculated by with the up vector, considering that this axis must be perpendicular to the W
+  + the up vector no necessarily is perpendicular, so we fix is
+
+- at last, but no least, we use the W and U to find the V
+
 ```
 - finding W = -lookV/|lookV|
 
 - finding U = upV x W/|upV x W|
+
+- finding V = lookV * upV
 ```
+
+- now we have (u,v,w) in relation to the origin (__canonical basis__)
+  + what we want is the opposite, the world in relation to the camera
+
+#### World-to-Camera: Translate
+- to move all objects in the scene (that are in relation to the canonical)
+  + simply multiply the vertex by the matrix with the values of the central point of the camera axis
+
+- [TODO] add matrix
+
+#### World-to-Camera: Rotation
+- ... [TODO] complete....  matrix
+
+- we use inside info about the matrix to calculate its inverse
+  + columns are orthogonal to each other
+  + columns represent unit vectors
+
+- knowing that we can just the __Tranpose__ of the matrix
+  + easy breezy lemon squeeze
+
+__NOTE:__ it is just valid for rotation matrix, since we know those properties of it
