@@ -42,7 +42,7 @@ __NOTE:__ this matrix doesn't exists on the _ray tracing_ methods, only on the _
   + independent from resolution
 
 - the conversion to the canonical volume is considering half of a block
-  + 1 > x/y > -1
+  + 1 > x|y > -1
   +  1 > z > 0
     * near plane Z = 0
     * far plane Z = -1
