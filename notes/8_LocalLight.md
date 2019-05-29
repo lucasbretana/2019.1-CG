@@ -80,3 +80,28 @@
   + I: light intensity
   + @: angle between light vector and reflection vector
   + f: specular variation
+
+#### Shading vs Lighting
+- we define a normal at each polygon
+  + not at each vertex
+
+- we don't want to calculate all the points (infinite!)
+
+##### Shading Models: Flat
+- lighting: evaluate the lighting equation at center of each polygon using the associate normal
+
+- shading: each sample point on the polygon is given the interpolated lighting value at the vertices (i.e. a total hack)
+
+##### Shading Models: Gouraud
+- we define a normal vector at each vertex
+
+- lighting: evaluate the lighting equation at each vertex using the associated normal vector
+
+- shading: each sample point's color on the polygon is interpolated from the color values at the polygon's vertices
+
+##### Shading Models: Phong
+- each vertex has an associated normal vector
+
+- lighting: evaluate the lighting equation at each vertex using the associated normal vector
+
+- shading: for every sample point on the polygon we interpolate the normals at vertices of the polygon and compute the color using lighting equation with the interpolated normal at each interior pixel
