@@ -41,18 +41,18 @@ NOTE: this class is different from computational vision and image processing
 	* GPU really suck for sequential calculation and synchronization
 
 ```
-				CPU model
+        CPU model
 ==========================
-|						|| ALU | ALU |
+|           || ALU | ALU |
 |   ctrl    ||-----------|
-|						|| ALU | ALU |
+|           || ALU | ALU |
 ==========================
 |                        |
 |         cache          |
 |                        |
 ==========================
 
-							GPU model
+              GPU model
 ===========================================
 |   | cache | ALU | ALU | ALU | ALU | ALU |
 | c |-------------------------------------|

@@ -106,9 +106,14 @@ p0                p4
 - check out _https://technologyinarchitecture.com/surface-continuity/_
 
 - this is the name given to how to connect surfaces in CG 
+	* G-: _no continuity_
 	* G0: _sharp edges_, applies to all touching surfaces that need to represent a solid
+	  + touching
 	* G1: _engineering fillets_, used for low details (programs like CAD system)
+	  + tangent
 	* G2: _curvate blends with 'lead-in'_, loose the highlight-kick of a tangent blend
+	  + curvature
 	* G3: _class A quality blends_, even more 'lead-in', creating a 'seamless' blend between surfaces
+	  + acceleration
 
 ![Continuity explained](img/continuity.jpg)

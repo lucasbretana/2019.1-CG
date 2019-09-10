@@ -58,5 +58,29 @@ __NOTE:__ a sketch of a model with only triangles is called __wireframe__
 	* either search for an algorithm of create a rule for that
 
 - check links for the books: both math and intuition
+	* Mathematics for 3D Game Programming and Computer Graphics (skeleton one)
+	* Fundamentals of Computer Graphics (tiger one)
 
-- check Khan Academy links about how pixar does something called "subdivision surfaces"
+- check Khan Academy links about how Pixar does something called "subdivision surfaces"
+
+### Defining the LOD
+- how to determinate the LOD to use for a given object on the scene?
+	* one way, that was very used, is to manually determine it
+	* and then make the LOD smaller as the object gets far away from the camera
+
+- but that is impractical as models became larger and more complex
+	* also, think about the number of objects in a scene!
+
+- apparently there are three main approaches to manage the LOD
+	* discrete: generate a number of objects with different LOD and use them as necessary
+		+ closer to camera = higher LOD
+		+ those models are generated offline, so no extra cost at runtime
+		+ is the _most widely used approach_
+	* contiguous: a data structure with a continuous LOD is created
+		+ the right LOD is extracted at runtime freeing unneeded polygons
+		+ this data structure is generated offline
+	* view dependant: the simplification is done by regions of high/low importance
+		+ silhouettes and closer to the camera regions are of high importance
+		+ the problem is that the cost of simplification if higher than the gain in polygon efficiency
+
+
