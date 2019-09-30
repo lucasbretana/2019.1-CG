@@ -26,6 +26,8 @@
   * e.g. the element to be drawn over is the main canvas
 
 ### Sharing information between JS and the OpenGL code (in the kernels)
+- basically sharing date between CPU and GPU
+
 - we can create communication channels using
   * _document.getElementById("id").getContext("webgl").getAttributeLocation(program, "id");_
 
@@ -41,3 +43,35 @@
   // (again, think of it as ARRAY_BUFFER = positionBuffer)
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 ```
+
+#### Receive data in the shaders
+- there are 4 ways shaders can receive data
+
+##### 1. Attributes, Buffers and Vertex Arrays
+- buffers are arrays of binary data you sent to the GPU
+  * contains: positions, normals, textures coordinates, vertex color..
+
+- **NOTE**: this data is NOT randomly accessed
+  * for each iteration of the shader it normally access a fixed number
+  * of the data in the buffer
+
+- attributes are used to specify __how to pull data from the buffer__
+  * number of parameters
+  * size of each parameter (e.g. 32bits floats)
+  * start of the buffer, offset
+  * the state of the attributes, which buffer and how use the data is store in the VAO
+    + VAO: vertex array object
+
+##### 2. Uniforms
+- basically global variables set before the execution of the shader
+
+##### 3. Textures
+- arrays of data that can be accessed randomly
+  * most commonly used to store texture as image data
+
+##### 4. Varying
+- communication between vertex and fragment shaders
+  * depending on what is being render (points, lines, triangles)
+  * the value stored in the varying by the vertex shader will
+    + interpolated in the fragment shader
+
