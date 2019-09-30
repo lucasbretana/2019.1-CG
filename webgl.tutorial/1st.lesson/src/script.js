@@ -7,33 +7,31 @@
 
 // what goes in this string will be discussed later
 var vertexShaderSource = `#version 300 es
+  // an attribute is an input (in) to a vertex shader.
+  // It will receive data from a buffer
+  in vec4 a_position;
 
-// an attribute is an input (in) to a vertex shader.
-// It will receive data from a buffer
-in vec4 a_position;
+  // all shaders have a main function
+  void main() {
 
-// all shaders have a main function
-void main() {
-
-  // gl_Position is a special variable a vertex shader
-  // is responsible for setting
-  gl_Position = a_position;
-}
+    // gl_Position is a special variable a vertex shader
+    // is responsible for setting
+    gl_Position = a_position;
+  }
 `;
 
 var fragmentShaderSource = `#version 300 es
+  // fragment shaders don't have a default precision so we need
+  // to pick one. mediump is a good default. It means "medium precision"
+  precision mediump float;
 
-// fragment shaders don't have a default precision so we need
-// to pick one. mediump is a good default. It means "medium precision"
-precision mediump float;
+  // we need to declare an output for the fragment shader
+  out vec4 outColor;
 
-// we need to declare an output for the fragment shader
-out vec4 outColor;
-
-void main() {
-  // Just set the output to a constant redish-purple
-  outColor = vec4(1, 0, 0.5, 1);
-}
+  void main() {
+    // Just set the output to a constant redish-purple
+    outColor = vec4(1, 0, 0.5, 1);
+  }
 `;
 
 function createShader(gl, type, source) {
@@ -72,6 +70,7 @@ function main() {
   // now we interelate the canvas with an object that will be used to draw w/ WebGL
   var gl = canvas.getContext("webgl2");
   if (!gl) {
+    console.error("Could not get a webgl context");
     return;
   }
 
@@ -93,16 +92,18 @@ function main() {
 
   // triangle cordinates
   var positions = [
-    0, 0,
-    0, .5,
-    .5, 0,
+    -0.5, 0.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.5, 0.0, 0.0,
   ];
+
   // that  is basically a memcopy
   // except we don't need to say the destination buffer channel (because of the previous bind)
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
   // context's buffer/origin buffer/context's type of draw (ignore for now)
 
   // Create a vertex array object (attribute state)
+  // that is what describes how data should be read/write to thte buffer itself
   var vao = gl.createVertexArray();
 
   // and make it the one we're currently working with
@@ -113,29 +114,31 @@ function main() {
   // Turn on the attribute
   gl.enableVertexAttribArray(positionAttributeLocation);
   // Q: what is that?
+  // A: otherwise atribute will be a constant value (unespecified)
 
   // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
   // that is basically a struct definition
-  var size = 2;          // 2 components per iteration
-  var type = gl.FLOAT;   // the data is 32bit floats
-  var normalize = false; // don't normalize the data
-  var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-  var offset = 0;        // start at the beginning of the buffer
+  var size      = 3;          // 3 components per iteration
+  var type      = gl.FLOAT;   // the data is 32bit floats
+  var normalize = false;      // don't normalize the data
+  var stride    = 0;          // 0 = move forward size * sizeof(type) each iteration to get the next position
+  var offset    = 0;          // start at the beginning of the buffer
   gl.vertexAttribPointer(
       positionAttributeLocation, size, type, normalize, stride, offset);
   // Q: what is that?
+  // A: the description on how to read data from the attribute
 
   // that is only used to accept resising of the window
-  webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+  webglUtils.resizeCanvasToDisplaySize(gl.canvas); // that is the function in the webgl helper api
 
   // Tell WebGL how to convert from clip space to pixels
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   // ocupies the entire canvas
 
   // Clear the canvas
-  gl.clearColor(0, 0, 0, 0); // background is white
+  gl.clearColor(0, 0, 0, 0); // background is white and transparent, apparently..
   gl.clear(gl.COLOR_BUFFER_BIT); // Q: what is that?
- 
+
   // Tell it to use our program (pair of shaders)
   gl.useProgram(program);
   // tells the engine to use the program with our shaders from before
@@ -143,14 +146,14 @@ function main() {
   // Bind the attribute/buffer set we want.
   gl.bindVertexArray(vao);
   // Q: bind the attributes array to where?
-  
+
   // draw, only that anything will be actually draw
   var primitiveType = gl.TRIANGLES;
-  var offset = 0;
-  var count = 3;
+  var offset        = 0;
+  var count         = 3;
   gl.drawArrays(primitiveType, offset, count);
-  // draw triangle, from the start of the buffer and draw COUNT of them
-  console.log("one");
+  // draw triangle, from the start of the buffer (offset = 0)
+  // there is COUNT vertexes in the buffer
 }
 
 main();
