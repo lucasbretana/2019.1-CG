@@ -82,7 +82,7 @@
   * 3) Up Vector
   * 4) Aspect ratio
   * 5) View angle
-  * 6)
+  * 6) Near and Far Clipping Planes
 
 ##### 1) Position
 - where is the camera located with respect to the origin?
@@ -102,7 +102,7 @@
   * determines how to camera is rotated around _look vector_
   * note that the Up Vector is not necessarily perpendicular to the _look vector_
     + so we do a small fix for that
-  
+
 ###### Camera Coordinate System
  - the camera equivalent axis of (x,y,x) are unit vectors (u,v,w)
   * spin in **u** is called _Roll_
@@ -151,3 +151,92 @@
   * this one is the monitor/screen system, _is 2D_
 
 **NOTE:** _WE DO NOT ACCTUALLY PROGRAM THIS PART, THIS ALWAYS THE SAME, SO IT'S DONE IN THE CODE_
+
+##### 4) Aspect ratio
+- ...
+
+##### 5) View angle
+- ...
+
+##### 6) Near and Far Clipping Planes
+- we want to see an image, for that we project the objects in the scene to the **near clip plane**
+  * too close: occupies the entire scene
+  * too far: we won't see thing that are too close
+
+- the **far clipping plane** serves two purposes:
+  * to avoid unnecessary computation
+  * precision, we cannot represent with full precision an arbitrary length of space
+    + map 100 cm to 0 -> 1 may be easy
+    + map 10M km to 0 -> 1 might not be to easy
+
+- the computer has an fixed precision, but let's say it goes from [0.0 -> 1.0]
+  * if we want to map 100 cm to this machine, every step (0.1) is equivalent to 10 cm
+  * if we want to map 10M km to this machine, every step (0.1) is equivalent to 1M km
+    + everything in between two steps will be "truncated" to a small/bigger one (like using floor of ceiling functions)
+
+##### Projection: 3D to 2D
+- basically how to draw the shadow of an object
+  * this is using the _rasterization_ technique
+
+- there is two ways of doing this:
+  * one for the **perpective** view: which have a "pyramid" view volume
+  * one for the **parallel** view: which have a "cubic" view volume (actually a parallelepiped)
+
+##### Parallel View Volume
+- NOTE: out model has limitations, but is good enough to get us the intuition
+  * we use only the  ..
+
+- so, to make the 2D view from the 3D world we need to "smash the scene to **near plane**"
+  * there is no descretization in this process, we only loose the 3D information part
+  * everything is still vectors and points, only in the 2D world
+
+- NOTE: every frame the unused information (3D stuff) is discarded and redraw in 2D form
+
+##### Parallel Projection
+- **so far we**: translate objects to origin and rotate the axis
+
+- **now we need to**: normalize everything to a common base (between 0 and 1) and convert the 3D information to a 2D view
+  * this make it easy for computing
+  * like defining what goes inside/outside of the clipping area
+  * normalize things make it possible to create dedicated HW for that
+  * we can compute stuff without thinking about resolution
+
+- **Canonical Parallel View Volume**
+  * near plane is at 0
+  * far plane if at 1
+  * look vector (0, 0, -1)
+  * up vector (0, 1, 0)
+**NOTE**: this does not exists, is represented inside of the matrix that we shall define now
+  * it just defines what goes inside/outside the view volume
+
+- when we multiply the objects, that are in the world scale, we transfer them to the normalized view
+  * x' = 2\*x / width
+  * y' = 2\*y / height
+  * z' = z / far
+
+- we can now put those formulas into a matrix (as its principal diagonal)
+  * and every point multiplied by this matrix is the same thing as calculate the x, y, x separately
+  * the idea is to use a matrix so we can combine all of them into a single one
+
+- now we also need to drop the 3D axis information so we can project it in a 2D screen, for instance
+  * this only works because we put everything into the view of the camera
+  * otherwise everything else would project to the world view, and vanish in some point
+
+- and at least, in a matrix form, we just use a 0 to loose the **z** information of the objects
+
+**NOTE:** _WE DO NOT ACCTUALLY PROGRAM THIS PART, THIS ALWAYS THE SAME, SO IT'S DONE IN THE CODE_
+
+**NOTE:** for the perspective view thing are not that easy, since we cannot just loose the **Z** information
+  * that is because we have an angle with the near plane
+
+## Camera, the overview
+- we have many object that comes from a scanner
+
+- those object don't have a world, they are in their own coordinate system
+
+- now every object is put in a common world coordinate system
+  * so they're not in the same position
+
+- once that's done we put them in the camera coordinate system
+
+- and now we finally put them in the same normalized coordinate system
