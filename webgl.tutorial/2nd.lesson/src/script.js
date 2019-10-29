@@ -72,6 +72,28 @@ function createProgram(gl, vertexShader, fragmentShader) {
   return undefined;
 }
 
+function randomInt(range) {
+  return Math.floor(Math.random() * range);
+}
+
+function setRectangle(gl, x, y, width, height) {
+  var x1 = x;
+  var x2 = x + width;
+  var y1 = y;
+  var y2 = y + height;
+
+  var position = new Float32Array([
+    x1, y1,
+    x2, y1,
+    x1, y2,
+    x1, y2,
+    x2, y1,
+    x2, y2
+  ]);
+
+  gl.bufferData(gl.ARRAY_BUFFER, position, gl.STATIC_DRAW);
+}
+
 function main() {
   var canvas = document.getElementById("main-canvas");
   var gl = canvas.getContext("webgl2");
@@ -146,28 +168,6 @@ function main() {
     var count         = 6; // 2 triangles <-> 1 square shape
     gl.drawArrays(primitiveType, offset, count);
   }
-}
-
-function randomInt(range) {
-  return Math.floor(Math.random() * range);
-}
-
-function setRectangle(gl, x, y, width, height) {
-  var x1 = x;
-  var x2 = x + width;
-  var y1 = y;
-  var y2 = y + height;
-
-  var position = new Float32Array([
-    x1, y1,
-    x2, y1,
-    x1, y2,
-    x1, y2,
-    x2, y1,
-    x2, y2
-  ]);
-
-  gl.bufferData(gl.ARRAY_BUFFER, position, gl.STATIC_DRAW);
 }
 
 main();
