@@ -35,3 +35,28 @@ that uses the 3 space dimensions
 
 
 ### Clipping
+
+This is done in the `screen space`, i.e., in a 2D space
+
+### Line Clipping
+
+The points is easy,
+```
+  if ( Xmin < X < Xmax ) && ( Ymin < Y < Ymax ) print (X, Y)
+```
+
+But lines have many alternatives
+- X and Y inside the screen area
+- only X (or Y) inside the screen
+- neither X or Y inside, the line passes thought inside the scene
+- neither X or Y inside, line completely outside the area
+
+_Parametric Line Formulation for Clipping_ 
+Using: 0 <= t <= 1
+- X = X0 + t(X1 - X0)
+- Y = Y0 + t(Y1 - Y0)
+- P(t) = P0 + t(P0 - P1)
+
+The **Cohen-Sutherland Line Clipping in 2D** is an algorithm for making scene clipping
+- divide the plane into 9 regions
+- compute the sign bit of 4 comparisons between a vertex and a _clip edge_
